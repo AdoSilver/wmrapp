@@ -1,0 +1,41 @@
+
+<ion-header>
+
+  <ion-navbar hideBackButton>
+    <ion-grid>
+      <ion-row>
+        <ion-buttons start>
+          <button ion-button (click)="onOpenMenu()">
+              <ion-icon name="menu"></ion-icon>
+          </button>
+        </ion-buttons>
+          
+          <ion-title text-center>WMR-App</ion-title>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content style="background: #f3f6fb">
+      <ion-label *ngIf="readings" style="font-weight: bold; font-family: sans-serif" padding-left padding-right > Monthly water bill records  </ion-label>
+      <ion-item no-padding padding-left *ngFor="let reading of readings">
+        <ion-grid no-padding>
+          <ion-row align-items: center>
+            <ion-col>
+                <img style="padding-right: 5px" [src]="reading.photo">
+            </ion-col>
+            <ion-col>    
+              <h3>{{ getMonthName(reading.month) +"  "+reading.year }}</h3>
+              <p>{{ getUnits(reading.units)+"("+ getUnits(reading.absUnits) +") Units" }}</p>
+            </ion-col>
+            <ion-col></ion-col>
+            <ion-col align-self: stretch>
+              <h4 text-center>{{ "TZS "+getUnits(reading.amount) }}</h4>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+</ion-content>

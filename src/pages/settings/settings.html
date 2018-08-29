@@ -1,0 +1,33 @@
+
+<ion-header>
+
+  <ion-navbar >
+    <ion-title block text-center >Settings</ion-title>
+    <ion-label text-end style="font-size: 17px" block color="primary" outline (click)="onChangeConfig(f)">Save</ion-label>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  
+  <form #f="ngForm" (ngSubmit)="onChangeConfig(f)">
+    <ion-list>
+
+        <ion-item block>
+          <ion-label style="color: #000000"> Cost per unit (in TZS)</ion-label>
+          <ion-input text-right ngModel name="costPerUnit" type="number" [(ngModel)]="appConfig.cost_per_unit"></ion-input>
+          <button hidden type="submit"></button>
+        </ion-item>
+
+        <ion-item block>
+            <ion-label style="color: #000000">End of month</ion-label>
+            <ion-toggle enabled ngModel name="endOfMonth" checked="false" [(ngModel)]="appConfig.end_of_month"></ion-toggle>
+            <button hidden type="submit" ></button>
+        </ion-item>
+      
+    </ion-list>
+  </form>
+
+
+</ion-content>

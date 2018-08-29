@@ -1,0 +1,61 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Register</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <form #f="ngForm" (ngSubmit)="onRegister(f)">
+        <ion-list>
+
+        <ion-item block>
+                <ion-label style="color: #000000">Email: </ion-label>
+                <ion-input text-right type="text" ngModel name="name" placeholder="eg. George Ioby" required></ion-input>
+            </ion-item>
+
+            <ion-item block>
+            <ion-label style="color: #000000">Email: </ion-label>
+            <ion-input text-right type="text" ngModel name="email" placeholder="eg. georgeio@gmail.com" required></ion-input>
+            </ion-item>
+
+            <ion-item block>
+                <ion-label style="color: #000000">Phone: </ion-label>
+                <ion-input text-right type="text" ngModel name="phone" placeholder="eg. +255 456 454 454" required></ion-input>
+            </ion-item>
+
+            
+            <ion-grid padding-bottom padding-left padding-right block>
+                <ion-label>Roles</ion-label>
+                <ion-row>
+                <ion-col>
+                    <ion-label end style="color: #444444; font-size: 80%">Admin</ion-label>
+                    <ion-checkbox start color="primary" ngModel name="admin" checked="false"></ion-checkbox>
+                </ion-col>
+                <ion-col>
+                    <ion-label style="color: #444444; font-size: 80%">Supplier</ion-label>
+                    <ion-checkbox color="primary" ngModel name="supplier" checked="false" [(ngModel)]="isSupplierChecked" (ionChange)="onSupplierChecked()"></ion-checkbox>
+                </ion-col>
+                <ion-col>
+                    <ion-label style="color: #444444; font-size: 80%">Subscriber</ion-label>
+                    <ion-checkbox color="primary" ngModel name="subscriber" checked="false" [(ngModel)]="isSubscriberChecked" (ionChange)="onSubscriberChecked()"></ion-checkbox>
+                </ion-col>
+                </ion-row>
+            </ion-grid>
+
+            
+            <ion-item block>
+                <ion-label style="color: #000000">Location: </ion-label>
+                <ion-input text-right type="text" ngModel name="location" placeholder="eg. Daresalaam" required></ion-input>
+                </ion-item>
+
+                <div padding-top>
+                    <button ion-button type="submit" block style="text-transform: none; font-weight: bold" [disabled]="!f.valid">Register</button>
+                </div>
+        </ion-list>
+
+    </form>
+
+</ion-content>

@@ -1,0 +1,98 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Enter Reading</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content style="background: #f3f6fb" >
+
+    <ion-card>
+
+        <form #f="ngForm" (ngSubmit)="onSubmitReading(f)" >
+
+        <ion-card-header>
+          Enter this month's reading:
+        </ion-card-header>
+      
+        <ion-card-content>
+          <ion-grid>
+
+            <ion-row>
+              <ion-col>
+                  <ion-label text-center style="color: #000000; font-size: 100%"> M<sup>3</sup></ion-label>
+              </ion-col>
+              <ion-col>
+                  <ion-input text-center ngModel name="whole_no" maxlength="4" style="width: 100%; border: 1px solid #dfdfdf;" type="number" value="" placeholder="0"></ion-input>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col>
+                    <ion-label text-center style="color: #000000; font-size: 100%">x0.1</ion-label>
+                </ion-col>
+                <ion-col>
+                    <ion-input text-center ngModel name="one" maxlength="1" style="border: 1px solid #dfdfdf;" type="number" value="" placeholder="0"></ion-input>
+                </ion-col>
+ 
+            </ion-row>
+
+            <ion-row>
+                <ion-col>
+                    <ion-label text-center style="color: #000000; font-size: 100%">x0.01</ion-label>
+                </ion-col>
+                <ion-col>
+                    <ion-input text-center ngModel name="two" maxlength="1" style="border: 1px solid #dfdfdf;" type="number" value="" placeholder="0"></ion-input>
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col>
+                    <ion-label text-center style="color: #000000; font-size: 100%">x0.001</ion-label>
+                </ion-col>
+                <ion-col>
+                    <ion-input text-center ngModel name="three" maxlength="1" style="border: 1px solid #dfdfdf;" type="number" value="" placeholder="0"></ion-input>
+                </ion-col>
+
+            </ion-row>
+
+            <ion-row>
+                <ion-col>
+                    <ion-label text-center style="color: #000000; font-size: 100%">x0.001</ion-label>
+                </ion-col>
+                <ion-col>
+                    <ion-input text-center ngModel name="four" maxlength="1" style="border: 1px solid #dfdfdf;" type="number" value="" placeholder="0"></ion-input>
+                </ion-col>
+            </ion-row>
+
+
+            <ion-row style="height: 100%; justify-content: center; align-items: center;">
+               <ion-col>
+                  <img style="width: 100px; height: 100px; background: #dfdfdf" [src]="myphoto" *ngIf="myphoto" />
+                </ion-col>
+                <ion-col>
+                  <button ion-button outline icon-start type="button" (click)="openCamera()" block style="text-transform: none; font-weight: bold">
+                      <ion-icon name="camera" is-active="false"></ion-icon>
+                      Meter's photo
+                </button>
+                </ion-col>
+            </ion-row>
+          </ion-grid>
+
+         
+            <div padding-bottom>
+                <button ion-button icon-start type="submit" block style="text-transform: none; font-weight: bold">
+                    Submit
+                  </button>
+            </div>
+          
+        </ion-card-content>
+
+        </form>
+
+      </ion-card>
+
+</ion-content>
