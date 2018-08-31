@@ -10,7 +10,7 @@
           </button>
         </ion-buttons>
           
-          <ion-title text-center>WMR-App</ion-title>
+          <ion-title text-center>Mita Yangu</ion-title>
       </ion-row>
     </ion-grid>
   </ion-navbar>
@@ -19,6 +19,7 @@
 
 
 <ion-content style="background: #f3f6fb">
+      <ion-label *ngIf="isRecordsNull" style="font-weight: bold; font-family: sans-serif; color: #666666" text-center padding-left padding-right > You have no records yet </ion-label>
       <ion-label *ngIf="readings" style="font-weight: bold; font-family: sans-serif" padding-left padding-right > Monthly water bill records  </ion-label>
       <ion-item no-padding padding-left *ngFor="let reading of readings">
         <ion-grid no-padding>

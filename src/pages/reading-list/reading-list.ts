@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, LoadingController, AlertController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { NgForm } from '@angular/forms';
 import { AuthService } from '../login/auth';
 import { configurations, Reading } from '../register-user/role';
 
@@ -17,21 +16,18 @@ export class ReadingListPage implements OnInit {
   public isEndOfMonth: boolean = false;
   public endOfMonth: boolean = true;
   public photoNotCaptured: boolean = true; 
-  public readings: {year: number, month: number, units: string, absUnits: string, photo: string, amount: string}[];
-
-
+  public readings: {key: string, year: number, month: number, units: string, absUnits: string, photo: string, amount: string}[];
+  public isConfigLoaded = false;
+  public isReadingsLoaded = false;
+  public loading: any;
+  public isRecordsNull = true;
+  
 
   constructor(private navCtrl: NavController, 
     private navParams: NavParams,
     private menuCtrl: MenuController, private camera: Camera,
-    private authService: AuthService, private loadingController: LoadingController ) {
-
-    const loading = this.loadingController.create({
-      content: "Please wait.."
-    });
+    private authService: AuthService, private loadingController: LoadingController, private alertController: AlertController ) {
   }
-
-
 
 
   ionViewDidLoad() {
@@ -45,65 +41,69 @@ export class ReadingListPage implements OnInit {
     this.menuCtrl.open();
   }
 
-  ngOnInit(){
-    const loading = this.loadingController.create({
+  ngOnInit(){}
+
+
+  ionViewDidEnter(){
+    this.loading = this.loadingController.create({
       content: "Please wait.."
     });
-    loading.present();
-    this.getReadings();
+    this.loading.present();
     this.getAppConfigurations();
-    loading.dismiss();
+    this.getReadings();
   }
 
 
-  // onSubmitReading(form: NgForm){
-  //     console.log(form.value);
-  //     let value = form.value.whole_no+"."+form.value.one + form.value.two + form.value.three + form.value.four;
-  //     let year = new Date().getUTCFullYear();
-  //     // let month = new Date().getUTCMonth()+1;
-  //     let month = form.value.four;
-  //     console.log("Current Date ",value); 
-
-  //     if(this.photoNotCaptured){
-  //       this.myphoto = "no_photo";
-  //     }
-  //     this.authService.recordMeterReading(year,month,value,this.myphoto)
-  //     .subscribe( () => {
-  //         console.log("reading success");
-  //         this.getReadings();
-  //     }, error => {
-  //         console.log(error);
-  //       });
-  // }
-
   getReadings(){
-    const loading = this.loadingController.create({
-      content: "Please wait.."
-    });
-    loading.present();
     this.authService.getMeterReadings()
       .subscribe(
           (data) => {
-            // this.roles = JSON.parse(JSON.parse(data)[0];
-          var LOCAL_READINGS: Reading[] = [];
-          for (var i of data) {
-              LOCAL_READINGS.push(new Reading(i.year,i.month,i.units,i.absUnits,i.photo,i.amount.toString()));
-          }
-          this.readings = LOCAL_READINGS;
+                if(data){
+                  var rKeys = Object.keys(data);
+                  console.log("ugahooo "+ rKeys.length)
+                  if(rKeys.length > 0){
+                    this.isRecordsNull = false;
+                  }
+                  var LOCAL_READINGS: Reading[] = [];
+                  for(var key of rKeys){
+                      LOCAL_READINGS.push(new Reading(key,data[key].year,data[key].month,data[key].units,data[key].absUnits,data[key].photo,data[key].amount));
+                  }
+                this.readings = LOCAL_READINGS;
+                this.isReadingsLoaded = true;
+                if(this.isConfigLoaded){
+                  this.loading.dismiss();
+                }
+              }else{
+                this.isReadingsLoaded = true;
+                if(this.isConfigLoaded){
+                  this.loading.dismiss();
+                }
+                const alert = this.alertController.create({
+                  title: 'Alert',
+                  message: 'No Reading records found',
+                  buttons: ['Ok']
+                });
+                alert.present();
+              }
           },
           error => {
-          //    console.log(error);
+              console.log(error);
+              this.isReadingsLoaded = true;
+              if(this.isConfigLoaded){
+                this.loading.dismiss();
+              }
+              const alert = this.alertController.create({
+                title: 'Meter Records Error',
+                message: error.message,
+                buttons: ['Ok']
+              });
+              alert.present();
           }
       );
-      loading.dismiss();
   }
 
 
   getAppConfigurations(){
-    const loading = this.loadingController.create({
-      content: "Please wait.."
-    });
-    loading.present();
     this.authService.getAppConfigurations()
             .subscribe(
               (config: configurations) => {
@@ -113,18 +113,32 @@ export class ReadingListPage implements OnInit {
                       console.log("Config:isEndOfMonth: "+config.end_of_month);
                     }
                   }
+                  this.isConfigLoaded = true;
+                  if(this.isReadingsLoaded){
+                    this.loading.dismiss();
+                  }
               },
               error => {
                   console.log(error);
+                  this.isConfigLoaded = true;
+                  if(this.isReadingsLoaded){
+                    this.loading.dismiss();
+                  }
+                  const alert = this.alertController.create({
+                    title: 'User Configuration Error',
+                    message: error.message,
+                    buttons: ['Ok']
+                  });
+                  alert.present();
               }
           );
-    loading.dismiss();
   }
 
 
   private updateAppConfig(isEndOfMonth: boolean){
     this.isEndOfMonth = isEndOfMonth;
   }
+
 
   getMonthName(month: number): string{
     if(month == 1){
@@ -151,37 +165,13 @@ export class ReadingListPage implements OnInit {
       return "Nov";
     }else if(month == 12){
       return "Dec";
-    }
-    
+    } 
   }
+
 
   getUnits(units: string): string{
-    return parseFloat(units).toFixed(2);
+    return parseFloat(units).toFixed(4);
   }
-
-
-  // openCamera() {
-  //   const cameraOptions: CameraOptions = {
-  //     quality: 50,
-  //     destinationType: this.camera.DestinationType.DATA_URL,
-  //     encodingType: this.camera.EncodingType.JPEG,
-  //     mediaType: this.camera.MediaType.PICTURE,
-  //   };
-
-  //   this.camera.getPicture(cameraOptions)
-  //     .then((imageData) => {
-  //       // imageData is either a base64 encoded string or a file URI
-  //       // If it's base64:
-		
-  //       this.myphoto = 'data:image/jpeg;base64,' + imageData;
-  //       this.photoNotCaptured = false;
-  //     }, (err) => {
-  //     // Handle error
-  //     console.log("camera error "+err);
-	  
-  //   });
-  // }
-
 
 
 }

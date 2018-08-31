@@ -12,7 +12,7 @@
         <ion-list>
 
         <ion-item block>
-                <ion-label style="color: #000000">Email: </ion-label>
+                <ion-label style="color: #000000">Full name: </ion-label>
                 <ion-input text-right type="text" ngModel name="name" placeholder="eg. George Ioby" required></ion-input>
             </ion-item>
 
@@ -32,7 +32,7 @@
                 <ion-row>
                 <ion-col>
                     <ion-label end style="color: #444444; font-size: 80%">Admin</ion-label>
-                    <ion-checkbox start color="primary" ngModel name="admin" checked="false"></ion-checkbox>
+                    <ion-checkbox start color="primary" ngModel name="admin" checked="false" [(ngModel)]="isAdminChecked" (ionChange)="onAdminChecked()"></ion-checkbox>
                 </ion-col>
                 <ion-col>
                     <ion-label style="color: #444444; font-size: 80%">Supplier</ion-label>

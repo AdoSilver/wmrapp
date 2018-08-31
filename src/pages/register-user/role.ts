@@ -37,8 +37,10 @@ export class Reading{
     public absUnits: string;
     public photo: string;
     public amount: string;
+    public key: string;
 
-    constructor(year: number, month: number, units: string, absUnits: string, photo: string, amount: string){
+    constructor(key: string, year: number, month: number, units: string, absUnits: string, photo: string, amount: string){
+        this.key = key;
         this.year = year;
         this.month = month;
         this.units = units;

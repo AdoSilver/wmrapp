@@ -30,28 +30,18 @@ export class LoginPage {
     });
   }
 
-  
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
 
 
-  
-
   onGoogleBtnPressed(){
     this.googleLogin();
   }
 
-
-
-
   onLogin(form: NgForm){
     this.loginProcess(form.value.email);
   }
-
-
-
 
 
   googleLogin(): Promise<any> {
@@ -66,13 +56,15 @@ export class LoginPage {
         }, err => {
             // console.error("Error: ", err)
             // reject(err);
+            const alert = this.alertController.create({
+              title: 'Login failed',
+              message: err.message,
+              buttons: ['Ok']
+            });
+            alert.present();
         });
       });
-      }
-
-
-
-
+    }
 
     private loginProcess(email: string){
       const loading = this.loadingController.create({
@@ -80,6 +72,7 @@ export class LoginPage {
       });
       loading.present();
       this.authService.loginUser(email).then(data => {
+        this.navCtrl.setRoot("ReadingListPage");
         console.log(data);
         loading.dismiss();
       }).catch(error => {
