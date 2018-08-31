@@ -1,31 +1,39 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
-import { NgForm } from "@Angular/forms";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  LoadingController,
+  AlertController
+} from 'ionic-angular';
+import { NgForm } from '@angular/forms';
 import { AuthService } from './auth';
 import firebase from 'firebase';
 import { GooglePlus } from '@ionic-native/google-plus';
 
-
-
 @IonicPage()
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html',
+  templateUrl: 'login.html'
 })
 export class LoginPage {
-
   userProfile: any;
+  logoUrl: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-  private authService: AuthService, private loadingController: LoadingController,
-  private alertController: AlertController, private googlePlus: GooglePlus) {
-
-
-    firebase.auth().onAuthStateChanged( user => {
-      if (user){
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private authService: AuthService,
+    private loadingController: LoadingController,
+    private alertController: AlertController,
+    private googlePlus: GooglePlus
+  ) {
+    this.logoUrl = 'assets/mita_yangu_icon.png';
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
         this.userProfile = user;
-      } else { 
-          this.userProfile = null;
+      } else {
+        this.userProfile = null;
       }
     });
   }
@@ -34,26 +42,30 @@ export class LoginPage {
     console.log('ionViewDidLoad LoginPage');
   }
 
-
-  onGoogleBtnPressed(){
+  onGoogleBtnPressed() {
     this.googleLogin();
   }
 
-  onLogin(form: NgForm){
+  onLogin(form: NgForm) {
     this.loginProcess(form.value.email);
   }
 
-
   googleLogin(): Promise<any> {
-    return new Promise((resolve, reject) => { 
-        this.googlePlus.login({
-          'webClientId': '516380198970-j86ia1geh3qu8qbo2kvp2abpf43c1er5.apps.googleusercontent.com',
-          'offline': true
-        }).then( res => {
-                const googleCredential = firebase.auth.GoogleAuthProvider
-                    .credential(res.idToken);
-                    this.loginProcess(res.email);
-        }, err => {
+    return new Promise((resolve, reject) => {
+      this.googlePlus
+        .login({
+          webClientId:
+            '516380198970-j86ia1geh3qu8qbo2kvp2abpf43c1er5.apps.googleusercontent.com',
+          offline: true
+        })
+        .then(
+          res => {
+            const googleCredential = firebase.auth.GoogleAuthProvider.credential(
+              res.idToken
+            );
+            this.loginProcess(res.email);
+          },
+          err => {
             // console.error("Error: ", err)
             // reject(err);
             const alert = this.alertController.create({
@@ -62,20 +74,24 @@ export class LoginPage {
               buttons: ['Ok']
             });
             alert.present();
-        });
-      });
-    }
+          }
+        );
+    });
+  }
 
-    private loginProcess(email: string){
-      const loading = this.loadingController.create({
-        content: "Loggin in.."
-      });
-      loading.present();
-      this.authService.loginUser(email).then(data => {
-        this.navCtrl.setRoot("ReadingListPage");
+  private loginProcess(email: string) {
+    const loading = this.loadingController.create({
+      content: 'Loggin in..'
+    });
+    loading.present();
+    this.authService
+      .loginUser(email)
+      .then(data => {
+        this.navCtrl.setRoot('ReadingListPage');
         console.log(data);
         loading.dismiss();
-      }).catch(error => {
+      })
+      .catch(error => {
         console.log(error);
         const alert = this.alertController.create({
           title: 'Login failed',
@@ -85,10 +101,5 @@ export class LoginPage {
         alert.present();
         loading.dismiss();
       });
-    }
-
-
-
-
+  }
 }
- 

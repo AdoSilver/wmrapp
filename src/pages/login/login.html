@@ -1,30 +1,35 @@
-<ion-header>
-</ion-header>
-
-
 <ion-content>
 
-    <form #f="ngForm" (ngSubmit)="onLogin(f)" padding>
-      <div style="padding-top: 50px">
-          <ion-label text-center style="font-size: 150%; color: #444; font-style: sans-serif; font-weight: bold">
-              Mita Yangu
-          </ion-label>
+  <ion-row>
+    <ion-col class="topSLogan">
+      <div class="logo">
+        <img [src]="logoUrl">
       </div>
-       
-      <ion-list padding-top padding-left padding-right>
-        <ion-item>
-          <ion-label floating>Email</ion-label>
-          <ion-input type="text" name="email" ngModel required></ion-input>
-        </ion-item>
-      </ion-list>
-    
-      <div padding-bottom padding-left padding-right>
-          <button ion-button type="submit" block style="text-transform: none; font-weight: bold" [disabled]="!f.valid">Login</button>
+      <div>
+        <ion-label text-center style="font-size: 150%; color: #444; font-style: sans-serif; font-weight: bold">
+          Mita Yangu
+        </ion-label>
       </div>
-      <div padding-left padding-right>
-          <button ion-button block type="button" color="danger" style="text-transform: none; font-weight: bold" (click)="onGoogleBtnPressed()">Or Login with Google</button>
-      </div>
-            
-    </form>
-    
+    </ion-col>
+  </ion-row>
+
+
+  <form #f="ngForm" (ngSubmit)="onLogin(f)" padding>
+    <ion-list padding-top padding-left padding-right>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="text" name="email" ngModel required></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div padding-bottom padding-left padding-right>
+      <button ion-button type="submit" block style="text-transform: none; font-weight: bold" [disabled]="!f.valid">Login</button>
+    </div>
+    <div padding-left padding-right>
+      <button ion-button block type="button" color="danger" style="text-transform: none; font-weight: bold" (click)="onGoogleBtnPressed()">Or
+        Login with Google</button>
+    </div>
+
+  </form>
+
 </ion-content>
